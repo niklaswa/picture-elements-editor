@@ -182,7 +182,7 @@ function App() {
                                 >
                                     {['state-icon', 'icon'].includes(element.type)
                                         && element.icon && element.icon.startsWith('mdi:') ? (
-                                        <img src={"/node_modules/@mdi/svg/svg/" + element.icon.replace('mdi:', '') + ".svg"}
+                                        <img src={"/assets/mdi/" + element.icon.replace('mdi:', '') + ".svg"}
                                              alt=""/>
                                     ) : element.type}
                                 </div>
