@@ -157,6 +157,7 @@ function App() {
                     </div>
                     <textarea
                         spellCheck={false}
+                        placeholder={'Paste your picture-elements card yaml configuration here'}
                         style={{border: configError ? '1px solid red' : '1px solid #ccc'}}
                         onChange={(e) => parseConfig(e.target.value)}
                         value={config ? YAML.stringify(config) : ''}
