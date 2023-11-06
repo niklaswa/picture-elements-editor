@@ -41,14 +41,18 @@ input {
 
 .element {
     position: absolute;
+    cursor: grab;
+    user-select: none;
+    transform: translate(-50%, -50%);
+}
+
+.element[data-type="icon"], .element[data-type="state-icon"] {
     transform: translate(-50%, -50%);
     width: 40px;
     height: 40px;
-    cursor: grab;
-    user-select: none;
 }
 
-.element img {
+.element .icon {
     width: 24px;
     height: 24px;
     position: absolute;
@@ -56,4 +60,10 @@ input {
     left: 50%;
     transform: translate(-50%, -50%);
     filter: invert(1);
+}
+
+.element img {
+    display: block;
+    height: auto;
+    width: 100%;
 }

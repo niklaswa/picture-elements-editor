@@ -58,7 +58,7 @@ function App() {
         if (!image && config) {
             setImage(homeAssistantHost + config.image);
         }
-    }, [config, homeAssistantHost]);
+    }, [config, homeAssistantHost, image]);
 
     useEffect(() => {
         // Save home assistant host to local storage
@@ -66,7 +66,7 @@ function App() {
         if (config) {
             setImage(homeAssistantHost + config.image);
         }
-    }, [homeAssistantHost]);
+    }, [config, homeAssistantHost]);
 
     const handleMouseDown = (element: PictureElement, e: React.MouseEvent) => {
         e.preventDefault();
@@ -133,6 +133,25 @@ function App() {
         }
         return cssStyle;
     };
+
+    const renderElement = (element: PictureElement) => {
+        switch (element.type) {
+            case 'icon':
+            case 'state-icon':
+                if (element.icon && element.icon.startsWith('mdi:')) {
+                    return <img className="icon" src={"/assets/mdi/" + element.icon.replace('mdi:', '') + ".svg"} alt=""/>
+                }
+                break;
+            case 'image':
+                if (element.image) {
+                    return <img src={homeAssistantHost + element.image} alt=""/>
+                }
+                break;
+        }
+
+        return element.type;
+    };
+
     return (
         <>
             <h1>Picture Elements Card Editor</h1>
@@ -159,7 +178,15 @@ function App() {
                         spellCheck={false}
                         placeholder={'Paste your picture-elements card yaml configuration here'}
                         style={{border: configError ? '1px solid red' : '1px solid #ccc'}}
-                        onChange={(e) => parseConfig(e.target.value)}
+                        onChange={(e) => {
+                            parseConfig(e.currentTarget.value);
+                        }}
+                        onKeyDown={(e) => {
+                            if (e.key === 's' && e.ctrlKey || e.key === 's' && e.metaKey) {
+                                e.preventDefault();
+                                parseConfig(e.currentTarget.value);
+                            }
+                        }}
                         value={config ? YAML.stringify(config) : ''}
                     >
                     </textarea>
@@ -176,15 +203,12 @@ function App() {
                                     className="element"
                                     style={translateStyle(element.style)}
                                     key={index}
+                                    data-type={element.type}
                                     onMouseDown={(e) => handleMouseDown(element, e)}
                                     onMouseUp={handleMouseUp}
                                     onMouseMove={handleMouseMove}
                                 >
-                                    {['state-icon', 'icon'].includes(element.type)
-                                        && element.icon && element.icon.startsWith('mdi:') ? (
-                                        <img src={"/assets/mdi/" + element.icon.replace('mdi:', '') + ".svg"}
-                                             alt=""/>
-                                    ) : element.type}
+                                    {renderElement(element)}
                                 </div>
                             ))}
                         </div>

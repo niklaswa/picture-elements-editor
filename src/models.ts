@@ -17,7 +17,8 @@ interface PictureElement {
     hold_action?: Action;
     double_tap_action?: Action;
     style?: Style;
-
+    image?: string;
+    state_image?: any;
 }
 
 interface Action {
